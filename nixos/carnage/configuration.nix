@@ -45,6 +45,8 @@
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
+  services.openssh.enable = true;
+  services.tailscale.enable = true;
 
   # Enable the GNOME Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
@@ -97,6 +99,10 @@
 
   # Install firefox.
   programs.firefox.enable = true;
+  programs.kdeconnect = {
+    enable = true;
+    package = pkgs.gnomeExtensions.gsconnect;
+   };
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget

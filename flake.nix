@@ -17,8 +17,6 @@
 
     packages.x86_64-linux.default = self.packages.x86_64-linux.hello;
 
-    packages.x96_64-linux.vesktop = pkgs.vesktop;
-
     devShells.x86_64-linux.default = pkgs.mkShell {
       buildInputs = [];
     };
