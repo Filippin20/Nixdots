@@ -9,6 +9,15 @@
   imports = [
     # Include the results of the hardware scan.
     # ./hardware-configuration.nix
+
+    # Importando vários desktops uhummm
+    ../common/desktops/gnome.nix
+    ../common/desktops/gdm.nix
+    ../common/desktops/plasma.nix
+   
+    # Importando programas :)
+      
+   
   ];
 
   # Bootloader.
@@ -16,11 +25,6 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   networking.hostName = "carnage"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Enable networking
   networking.networkmanager.enable = true;
@@ -49,17 +53,16 @@
   services.tailscale.enable = true;
 
   # Enable the GNOME Desktop Environment.
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
+  # Está em gnome/gdm.nix
 
   # Configure keymap in X11
   services.xserver.xkb = {
-    layout = "br";
-    variant = "";
+    layout = "us";
+    variant = "intl";
   };
 
   # Configure console keymap
-  console.keyMap = "br-abnt2";
+  console.keyMap = "us";
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -87,6 +90,7 @@
   users.users.filippo = {
     isNormalUser = true;
     description = "Filippo de Oliveira Barbosa";
+    initialPassword = "password";
     extraGroups = ["networkmanager" "wheel"];
     packages = with pkgs; [
       #  thunderbird
@@ -99,10 +103,7 @@
 
   # Install firefox.
   programs.firefox.enable = true;
-  programs.kdeconnect = {
-    enable = true;
-    package = pkgs.gnomeExtensions.gsconnect;
-   };
+ 
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
