@@ -9,7 +9,8 @@
 
   outputs = {
     self,
-    nixpkgs, ...
+    nixpkgs,
+    ...
   } @ inputs: let
     pkgs = nixpkgs.legacyPackages.x86_64-linux;
   in {
