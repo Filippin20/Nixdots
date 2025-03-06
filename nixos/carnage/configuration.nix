@@ -1,74 +1,59 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
-{
-  config,
-  pkgs,
-  ...
-}: {
+{pkgs, ...}: {
   imports = [
-    # Include the results of the hardware scan.
-    # ./hardware-configuration.nix
+    # GNOME, GDM e X11
+    ../common/desktop/gdm.nix
+    ../common/desktop/gnome.nix
+    ../common/desktop/xserver.nix
 
-    # Importando vários desktops uhummm
-    ../common/desktops/gnome.nix
-    ../common/desktops/gdm.nix
-    ../common/local/local.nix
-    ../common/pacotes/pacotes.nix
-    ../common/programas/programas.nix
-    ../common/servicos/servicos.nix
+    # Configuração do Nix e do local
+    ../common/settings/nix.nix
+    ../common/settings/locale.nix
 
-    # Importando programas :)
+    # Adicionando programas
+    ../common/programs/git.nix
+    ../common/programs/discord.nix
+    ../common/programs/firefox.nix
+    ../common/programs/kdeconnect.nix
+
+    # Ligando os serviços do sistema
+    ../common/services/ssh.nix
+    ../common/services/network.nix
+    ../common/services/tailscale.nix
+
+    # Configurando audio
+    ../common/hardware/audio.nix
   ];
 
-  # Bootloader.
+  ###########
+  # Sistema #
+  ###########
+
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "carnage"; # Define your hostname.
+  networking.hostName = "carnage";
+  system.stateVersion = "24.11";
 
-  # Enable networking
-  networking.networkmanager.enable = true;
+  ############
+  # Usuários #
+  ############
 
-  # Configure keymap in X11
-  services.xserver.xkb = {
-    layout = "us";
-    variant = "intl";
-  };
-
-  # Configure console keymap
-  console.keyMap = "us";
-
-  # Enable sound with pipewire.
-  hardware.pulseaudio.enable = false;
-  security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-  };
-
-  # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.filippo = {
     isNormalUser = true;
     description = "Filippo de Oliveira Barbosa";
     initialPassword = "password";
     extraGroups = ["networkmanager" "wheel"];
-    packages = with pkgs; [
-      #  thunderbird
-    ];
+    packages = with pkgs; [];
   };
 
-  # Habilitando flakes
+  ###########
+  # Teclado #
+  ###########
 
-  nix.settings.experimental-features = ["nix-command" "flakes"];
+  services.xserver.xkb = {
+    layout = "us";
+    variant = "intl";
+  };
 
-  environment.systemPackages = with pkgs; [
-  ];
-
-  system.stateVersion = "24.11"; # Did you read the comment?
-
-  # Habilitando pacotes proprietarios
-  nixpkgs.config.allowUnfree = true;
+  console.keyMap = "us";
 }
