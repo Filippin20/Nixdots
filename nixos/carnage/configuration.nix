@@ -1,12 +1,13 @@
 {pkgs, ...}: {
   imports = [
-    # GNOME E GDM
+    # GNOME, GDM e X11
     ../common/desktop/gdm.nix
     ../common/desktop/gnome.nix
+    ../common/desktop/xserver.nix
 
     # Configuração do Nix e do local
     ../common/settings/nix.nix
-    ../common/settings/locale.nix.nix
+    ../common/settings/locale.nix
 
     # Adicionando programas
     ../common/programs/git.nix
