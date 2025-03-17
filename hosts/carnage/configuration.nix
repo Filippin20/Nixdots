@@ -1,27 +1,28 @@
-{pkgs, ...}: {
-  imports = [
+{
+  pkgs,
+  inputs,
+  ...
+}: {
+  imports = let
+    cfg = ../../nixos;
+  in [
     # GNOME, GDM e X11
-    ../common/desktop/gdm.nix
-    ../common/desktop/gnome.nix
-    ../common/desktop/xserver.nix
+    "${cfg}/desktop"
 
     # Configuração do Nix e do local
-    ../common/settings/nix.nix
-    ../common/settings/locale.nix
+    "${cfg}/settings"
 
     # Adicionando programas
-    ../common/programs/git.nix
-    ../common/programs/discord.nix
-    ../common/programs/firefox.nix
-    ../common/programs/kdeconnect.nix
+    # "${cfg}/programs"
 
     # Ligando os serviços do sistema
-    ../common/services/ssh.nix
-    ../common/services/network.nix
-    ../common/services/tailscale.nix
+    "${cfg}/services"
 
     # Configurando audio
-    ../common/hardware/audio.nix
+    "${cfg}/hardware"
+
+    # Import home-manager's NixOS module
+    inputs.home-manager.nixosModules.home-manager
   ];
 
   ###########
@@ -46,7 +47,24 @@
     packages = with pkgs; [];
   };
 
-  ###########
+  ################
+  # Home-manager #
+  ################
+
+  home-manager = {
+    # Mesmo esquema do nixos no flake.nix
+    extraSpecialArgs = {inherit inputs;};
+    # Utiliza os pacotes do sistema
+    useGlobalPkgs = true;
+    # Separa por usuários
+    useUserPackages = true;
+    # Configura os usuários
+    users = {
+      # Import your home-manager configuration
+      filippo = import ./home.nix;
+    };
+  };
+
   # Teclado #
   ###########
 

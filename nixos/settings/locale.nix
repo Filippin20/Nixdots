@@ -3,6 +3,10 @@
 
   time.timeZone = "America/Sao_Paulo";
 
+  # COnfigurando data e hora para dual boot
+
+  time.hardwareClockInLocalTime = true;
+
   # Configurando propriedades internacionais
 
   i18n.defaultLocale = "pt_BR.UTF-8";

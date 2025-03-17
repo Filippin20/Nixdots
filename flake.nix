@@ -1,35 +1,25 @@
 {
-  description = "A very basic flake";
-
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
-    home-manager.url = "github:nix-community/home-manager";
+    home-manager.url = "github:nix-community/home-manager/release-24.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = {
-    self,
-    nixpkgs,
-    ...
-  } @ inputs: let
+  outputs = {nixpkgs, ...} @ inputs: let
     pkgs = nixpkgs.legacyPackages.x86_64-linux;
   in {
-    packages.x86_64-linux.hello = pkgs.hello;
-
-    packages.x86_64-linux.default = self.packages.x86_64-linux.hello;
-
     devShells.x86_64-linux.default = pkgs.mkShell {
-      buildInputs = [];
+      buildInputs = [pkgs.python3];
     };
 
     nixosConfigurations = {
       # Seu desktop
       carnage = nixpkgs.lib.nixosSystem {
-        specialArgs = {inherit inputs;};
         system = "x86_64-linux";
+        specialArgs = {inherit inputs;};
         modules = [
-          ./nixos/carnage/configuration.nix
-          ./nixos/carnage/hardware-configuration.nix
+          ./hosts/carnage/configuration.nix
+          ./hosts/carnage/hardware-configuration.nix
         ];
       };
 
