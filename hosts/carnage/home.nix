@@ -1,9 +1,10 @@
 {
   imports = let
-    cfg = ../../home;
+    cfg = ../../modules/home;
   in [
     # Adicionando programas
     "${cfg}/programs"
+    "${cfg}/shell"
   ];
 
   # Comando para rebuildar o sistema junto ao nixos-rebuild

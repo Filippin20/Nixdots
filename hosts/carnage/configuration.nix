@@ -4,7 +4,7 @@
   ...
 }: {
   imports = let
-    cfg = ../../nixos;
+    cfg = ../../modules/nixos;
   in [
     # GNOME, GDM e X11
     "${cfg}/desktop"
@@ -45,6 +45,8 @@
     initialPassword = "password";
     extraGroups = ["networkmanager" "wheel"];
     packages = with pkgs; [];
+    shell = pkgs.fish;
+    ignoreShellProgramCheck = true;
   };
 
   ################
